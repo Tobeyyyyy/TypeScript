@@ -1470,6 +1470,8 @@ export class TestState {
             const references = this.languageService.findRenameLocations(
                 this.activeFile.fileName, this.currentCaretPosition, findInStrings, findInComments, providePrefixAndSuffixTextForRename);
 
+                
+
             const sort = (locations: readonly ts.RenameLocation[] | undefined) =>
                 locations && ts.sort(locations, (r1, r2) => ts.compareStringsCaseSensitive(r1.fileName, r2.fileName) || r1.textSpan.start - r2.textSpan.start);
             assert.deepEqual(sort(references), sort(ranges.map((rangeOrOptions): ts.RenameLocation => {

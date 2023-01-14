@@ -4088,7 +4088,7 @@ export function isNodeDescendantOf(node: Node, ancestor: Node | undefined): bool
 // True if `name` is the name of a declaration node
 /** @internal */
 export function isDeclarationName(name: Node): boolean {
-    return !isSourceFile(name) && !isBindingPattern(name) && isDeclaration(name.parent) && name.parent.name === name;
+    return !isSourceFile(name) && !isBindingPattern(name) && isDeclaration(name.parent);
 }
 
 // See GH#16030

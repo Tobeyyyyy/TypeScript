@@ -2199,6 +2199,7 @@ export function canHaveLocals(node: Node): node is HasLocals {
 }
 
 function isDeclarationKind(kind: SyntaxKind) {
+
     return kind === SyntaxKind.ArrowFunction
         || kind === SyntaxKind.BindingElement
         || kind === SyntaxKind.ClassDeclaration
@@ -2233,7 +2234,9 @@ function isDeclarationKind(kind: SyntaxKind) {
         || kind === SyntaxKind.VariableDeclaration
         || kind === SyntaxKind.JSDocTypedefTag
         || kind === SyntaxKind.JSDocCallbackTag
-        || kind === SyntaxKind.JSDocPropertyTag;
+        || kind === SyntaxKind.JSDocPropertyTag
+        || kind === SyntaxKind.TypeQuery
+        || kind === SyntaxKind.TypeReference;
 }
 
 function isDeclarationStatementKind(kind: SyntaxKind) {

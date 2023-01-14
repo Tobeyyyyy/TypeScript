@@ -1,0 +1,10 @@
+/*====== /tests/cases/fourslash/renameKeyofTypeJSDoc.ts ======*/
+
+const [|RENAME|] = {
+  x: 3,
+  y: 4,
+};
+
+/** @typedef {keyof typeof foo} MyType */
+/** @typedef {keyof foo} MyType */
+/** @typedef {foo} MyType */
