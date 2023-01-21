@@ -1,0 +1,59 @@
+=== tests/cases/compiler/tupleObjectIntersectionOutOfBounds.ts ===
+type TupleIntersection1 = [string, number] & { x: string };
+>TupleIntersection1 : [string, number] & { x: string; }
+>x : string
+
+declare const t1: TupleIntersection1;
+>t1 : TupleIntersection1
+
+const a = t1[0]; // string
+>a : string
+>t1[0] : string
+>t1 : TupleIntersection1
+>0 : 0
+
+const b = t1[1]; // number
+>b : number
+>t1[1] : number
+>t1 : TupleIntersection1
+>1 : 1
+
+const c = t1[2]; // any + noImplicitAnyError
+>c : any
+>t1[2] : any
+>t1 : TupleIntersection1
+>2 : 2
+
+
+t1[2] = "abc" // noImplicitAnyError
+>t1[2] = "abc" : "abc"
+>t1[2] : any
+>t1 : TupleIntersection1
+>2 : 2
+>"abc" : "abc"
+
+type TupleIntersection2 = { [idx: number] : number} | [string]
+>TupleIntersection2 : { [idx: number]: number; } | [string]
+>idx : number
+
+declare const t2: TupleIntersection2
+>t2 : TupleIntersection2
+
+const d = t2[0] // number | string
+>d : string | number
+>t2[0] : string | number
+>t2 : TupleIntersection2
+>0 : 0
+
+const e = t2[1] // number
+>e : string | number
+>t2[1] : string | number
+>t2 : TupleIntersection2
+>1 : 1
+
+const f = t2[2] // number
+>f : string | number
+>t2[2] : string | number
+>t2 : TupleIntersection2
+>2 : 2
+

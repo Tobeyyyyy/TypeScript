@@ -17072,13 +17072,27 @@ export function createTypeChecker(host: TypeCheckerHost): TypeChecker {
                 }
             }
         }
+
         if (!(indexType.flags & TypeFlags.Nullable) && isTypeAssignableToKind(indexType, TypeFlags.StringLike | TypeFlags.NumberLike | TypeFlags.ESSymbolLike)) {
             if (objectType.flags & (TypeFlags.Any | TypeFlags.Never)) {
                 return objectType;
             }
+
+            let indexInfo;
+            let skip = false;
+            if (propName && isNumericLiteralName(propName)
+              && objectType.flags & TypeFlags.Intersection
+              && !(objectType as IntersectionType).types.filter(t => !isTupleType(t)).some(m => getApplicableIndexInfo(m, indexType) || getIndexInfoOfType(m, stringType))
+              ) {
+                indexInfo = undefined;
+                skip = true;
+            }
+            else {
+                indexInfo = getApplicableIndexInfo(objectType, indexType) || getIndexInfoOfType(objectType, stringType);
+            }
+
             // If no index signature is applicable, we default to the string index signature. In effect, this means the string
             // index signature applies even when accessing with a symbol-like type.
-            const indexInfo = getApplicableIndexInfo(objectType, indexType) || getIndexInfoOfType(objectType, stringType);
             if (indexInfo) {
                 if (accessFlags & AccessFlags.NoIndexSignatures && indexInfo.keyType !== numberType) {
                     if (accessExpression) {
@@ -17133,7 +17147,7 @@ export function createTypeChecker(host: TypeCheckerHost): TypeChecker {
                         const typeName = typeToString(objectType);
                         error(accessExpression, Diagnostics.Property_0_does_not_exist_on_type_1_Did_you_mean_to_access_the_static_member_2_instead, propName as string, typeName, typeName + "[" + getTextOfNode(accessExpression.argumentExpression) + "]");
                     }
-                    else if (getIndexTypeOfType(objectType, numberType)) {
+                    else if (!skip && getIndexTypeOfType(objectType, numberType)) {
                         error(accessExpression.argumentExpression, Diagnostics.Element_implicitly_has_an_any_type_because_index_expression_is_not_of_type_number);
                     }
                     else {

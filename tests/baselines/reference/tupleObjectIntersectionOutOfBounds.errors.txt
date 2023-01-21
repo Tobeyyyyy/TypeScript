@@ -1,0 +1,31 @@
+tests/cases/compiler/tupleObjectIntersectionOutOfBounds.ts(7,11): error TS7053: Element implicitly has an 'any' type because expression of type '2' can't be used to index type '[string, number] & { x: string; }'.
+  Property '2' does not exist on type '[string, number] & { x: string; }'.
+tests/cases/compiler/tupleObjectIntersectionOutOfBounds.ts(10,1): error TS7053: Element implicitly has an 'any' type because expression of type '2' can't be used to index type '[string, number] & { x: string; }'.
+  Property '2' does not exist on type '[string, number] & { x: string; }'.
+
+
+==== tests/cases/compiler/tupleObjectIntersectionOutOfBounds.ts (2 errors) ====
+    type TupleIntersection1 = [string, number] & { x: string };
+    
+    declare const t1: TupleIntersection1;
+    
+    const a = t1[0]; // string
+    const b = t1[1]; // number
+    const c = t1[2]; // any + noImplicitAnyError
+              ~~~~~
+!!! error TS7053: Element implicitly has an 'any' type because expression of type '2' can't be used to index type '[string, number] & { x: string; }'.
+!!! error TS7053:   Property '2' does not exist on type '[string, number] & { x: string; }'.
+    
+    
+    t1[2] = "abc" // noImplicitAnyError
+    ~~~~~
+!!! error TS7053: Element implicitly has an 'any' type because expression of type '2' can't be used to index type '[string, number] & { x: string; }'.
+!!! error TS7053:   Property '2' does not exist on type '[string, number] & { x: string; }'.
+    
+    type TupleIntersection2 = { [idx: number] : number} | [string]
+    
+    declare const t2: TupleIntersection2
+    
+    const d = t2[0] // number | string
+    const e = t2[1] // number
+    const f = t2[2] // number
