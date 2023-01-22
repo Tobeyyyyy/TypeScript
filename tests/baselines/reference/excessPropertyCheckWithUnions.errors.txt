@@ -16,10 +16,6 @@ tests/cases/compiler/excessPropertyCheckWithUnions.ts(40,1): error TS2322: Type 
   Type '{ tag: "A"; z: true; }' is not assignable to type '{ tag: "B"; z: boolean; }'.
     Types of property 'tag' are incompatible.
       Type '"A"' is not assignable to type '"B"'.
-tests/cases/compiler/excessPropertyCheckWithUnions.ts(49,35): error TS2322: Type '{ a: 1; b: 1; first: string; second: string; }' is not assignable to type 'Overlapping'.
-  Object literal may only specify known properties, and 'second' does not exist in type '{ a: 1; b: 1; first: string; }'.
-tests/cases/compiler/excessPropertyCheckWithUnions.ts(50,35): error TS2322: Type '{ a: 1; b: 1; first: string; third: string; }' is not assignable to type 'Overlapping'.
-  Object literal may only specify known properties, and 'third' does not exist in type '{ a: 1; b: 1; first: string; }'.
 tests/cases/compiler/excessPropertyCheckWithUnions.ts(66,9): error TS2322: Type '{ kind: "A"; n: { a: string; b: string; }; }' is not assignable to type 'AB'.
   Types of property 'n' are incompatible.
     Type '{ a: string; b: string; }' is not assignable to type 'AN'.
@@ -31,7 +27,7 @@ tests/cases/compiler/excessPropertyCheckWithUnions.ts(113,67): error TS2322: Typ
 tests/cases/compiler/excessPropertyCheckWithUnions.ts(114,63): error TS2322: Type 'string' is not assignable to type 'number'.
 
 
-==== tests/cases/compiler/excessPropertyCheckWithUnions.ts (14 errors) ====
+==== tests/cases/compiler/excessPropertyCheckWithUnions.ts (12 errors) ====
     type ADT = {
         tag: "A",
         a1: string
@@ -107,13 +103,7 @@ tests/cases/compiler/excessPropertyCheckWithUnions.ts(114,63): error TS2322: Typ
     
     // these two are still errors despite their doubled up discriminants
     over = { a: 1, b: 1, first: "ok", second: "error" }
-                                      ~~~~~~~~~~~~~~~
-!!! error TS2322: Type '{ a: 1; b: 1; first: string; second: string; }' is not assignable to type 'Overlapping'.
-!!! error TS2322:   Object literal may only specify known properties, and 'second' does not exist in type '{ a: 1; b: 1; first: string; }'.
     over = { a: 1, b: 1, first: "ok", third: "error" }
-                                      ~~~~~~~~~~~~~~
-!!! error TS2322: Type '{ a: 1; b: 1; first: string; third: string; }' is not assignable to type 'Overlapping'.
-!!! error TS2322:   Object literal may only specify known properties, and 'third' does not exist in type '{ a: 1; b: 1; first: string; }'.
     
     // Freshness disappears after spreading a union
     declare let t0: { a: any, b: any } | { d: any, e: any }

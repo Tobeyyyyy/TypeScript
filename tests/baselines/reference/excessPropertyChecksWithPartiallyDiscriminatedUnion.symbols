@@ -1,0 +1,26 @@
+=== tests/cases/compiler/excessPropertyChecksWithPartiallyDiscriminatedUnion.ts ===
+type TextureUse =
+>TextureUse : Symbol(TextureUse, Decl(excessPropertyChecksWithPartiallyDiscriminatedUnion.ts, 0, 0))
+
+| { edition: "bedrock" | "dungeons" }
+>edition : Symbol(edition, Decl(excessPropertyChecksWithPartiallyDiscriminatedUnion.ts, 1, 3))
+
+| { edition: "java"; type: "resource_pack"; assets: string }
+>edition : Symbol(edition, Decl(excessPropertyChecksWithPartiallyDiscriminatedUnion.ts, 2, 3))
+>type : Symbol(type, Decl(excessPropertyChecksWithPartiallyDiscriminatedUnion.ts, 2, 20))
+>assets : Symbol(assets, Decl(excessPropertyChecksWithPartiallyDiscriminatedUnion.ts, 2, 43))
+
+| { edition: "java"; type: "texture_pack" };
+>edition : Symbol(edition, Decl(excessPropertyChecksWithPartiallyDiscriminatedUnion.ts, 3, 3))
+>type : Symbol(type, Decl(excessPropertyChecksWithPartiallyDiscriminatedUnion.ts, 3, 20))
+
+const a: TextureUse = {
+>a : Symbol(a, Decl(excessPropertyChecksWithPartiallyDiscriminatedUnion.ts, 5, 5))
+>TextureUse : Symbol(TextureUse, Decl(excessPropertyChecksWithPartiallyDiscriminatedUnion.ts, 0, 0))
+
+    edition: "bedrock",
+>edition : Symbol(edition, Decl(excessPropertyChecksWithPartiallyDiscriminatedUnion.ts, 5, 23))
+
+    type: "resource_pack"
+>type : Symbol(type, Decl(excessPropertyChecksWithPartiallyDiscriminatedUnion.ts, 6, 23))
+}

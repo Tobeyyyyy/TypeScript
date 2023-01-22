@@ -1,0 +1,17 @@
+tests/cases/compiler/excessPropertyChecksWithPartiallyDiscriminatedUnion.ts(8,5): error TS2322: Type '{ edition: "bedrock"; type: "resource_pack"; }' is not assignable to type 'TextureUse'.
+  Object literal may only specify known properties, and 'type' does not exist in type '{ edition: "bedrock" | "dungeons"; }'.
+
+
+==== tests/cases/compiler/excessPropertyChecksWithPartiallyDiscriminatedUnion.ts (1 errors) ====
+    type TextureUse =
+    | { edition: "bedrock" | "dungeons" }
+    | { edition: "java"; type: "resource_pack"; assets: string }
+    | { edition: "java"; type: "texture_pack" };
+    
+    const a: TextureUse = {
+        edition: "bedrock",
+        type: "resource_pack"
+        ~~~~~~~~~~~~~~~~~~~~~
+!!! error TS2322: Type '{ edition: "bedrock"; type: "resource_pack"; }' is not assignable to type 'TextureUse'.
+!!! error TS2322:   Object literal may only specify known properties, and 'type' does not exist in type '{ edition: "bedrock" | "dungeons"; }'.
+    }

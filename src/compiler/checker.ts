@@ -47463,7 +47463,10 @@ export function createTypeChecker(host: TypeCheckerHost): TypeChecker {
             }
             const sourceProperties = getPropertiesOfType(source);
             if (sourceProperties) {
-                const sourcePropertiesFiltered = findDiscriminantProperties(sourceProperties, target);
+                let sourcePropertiesFiltered = findDiscriminantProperties(sourceProperties, target);
+
+                sourcePropertiesFiltered = filter(sourcePropertiesFiltered, s => (target as UnionType).types.every(t => getPropertyOfType(t, s.escapedName)));
+
                 if (sourcePropertiesFiltered) {
                     return discriminateTypeByDiscriminableItems(target as UnionType, map(sourcePropertiesFiltered, p => ([() => getTypeOfSymbol(p), p.escapedName] as [() => Type, __String])), isRelatedTo, /*defaultValue*/ undefined, skipPartial);
                 }

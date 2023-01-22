@@ -1,0 +1,28 @@
+=== tests/cases/compiler/excessPropertyChecksWithPartiallyDiscriminatedUnion.ts ===
+type TextureUse =
+>TextureUse : { edition: "bedrock" | "dungeons"; } | { edition: "java"; type: "resource_pack"; assets: string; } | { edition: "java"; type: "texture_pack"; }
+
+| { edition: "bedrock" | "dungeons" }
+>edition : "bedrock" | "dungeons"
+
+| { edition: "java"; type: "resource_pack"; assets: string }
+>edition : "java"
+>type : "resource_pack"
+>assets : string
+
+| { edition: "java"; type: "texture_pack" };
+>edition : "java"
+>type : "texture_pack"
+
+const a: TextureUse = {
+>a : TextureUse
+>{    edition: "bedrock",    type: "resource_pack"} : { edition: "bedrock"; type: "resource_pack"; }
+
+    edition: "bedrock",
+>edition : "bedrock"
+>"bedrock" : "bedrock"
+
+    type: "resource_pack"
+>type : "resource_pack"
+>"resource_pack" : "resource_pack"
+}
