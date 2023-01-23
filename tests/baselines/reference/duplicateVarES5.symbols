@@ -1,0 +1,20 @@
+=== tests/cases/compiler/duplicateVarES5.ts ===
+async function test(r: any) {
+>test : Symbol(test, Decl(duplicateVarES5.ts, 0, 0))
+>r : Symbol(r, Decl(duplicateVarES5.ts, 0, 20))
+
+    if (r) {
+>r : Symbol(r, Decl(duplicateVarES5.ts, 0, 20))
+
+        var a = new Error();
+>a : Symbol(a, Decl(duplicateVarES5.ts, 2, 11), Decl(duplicateVarES5.ts, 6, 11))
+>Error : Symbol(Error, Decl(lib.es5.d.ts, --, --), Decl(lib.es5.d.ts, --, --))
+    }
+    else if (r)
+>r : Symbol(r, Decl(duplicateVarES5.ts, 0, 20))
+    {
+        var a: Error;
+>a : Symbol(a, Decl(duplicateVarES5.ts, 2, 11), Decl(duplicateVarES5.ts, 6, 11))
+>Error : Symbol(Error, Decl(lib.es5.d.ts, --, --), Decl(lib.es5.d.ts, --, --))
+    }
+}

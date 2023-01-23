@@ -1,0 +1,20 @@
+=== tests/cases/compiler/duplicateVarES5.ts ===
+async function test(r: any) {
+>test : (r: any) => Promise<void>
+>r : any
+
+    if (r) {
+>r : any
+
+        var a = new Error();
+>a : Error
+>new Error() : Error
+>Error : ErrorConstructor
+    }
+    else if (r)
+>r : any
+    {
+        var a: Error;
+>a : Error
+    }
+}
