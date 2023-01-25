@@ -1,0 +1,77 @@
+=== tests/cases/compiler/restParameterInferenceContextual.ts ===
+const doSomething = <Args extends unknown[]>(
+>doSomething : <Args extends unknown[]>(fn1: (aNumber: number, ...rest: Args) => void, fn2: (aNumber: number, ...rest: Args) => void) => void
+><Args extends unknown[]>(    fn1: (aNumber: number, ...rest: Args) => void,    fn2: (aNumber: number, ...rest: Args) => void,) => {} : <Args extends unknown[]>(fn1: (aNumber: number, ...rest: Args) => void, fn2: (aNumber: number, ...rest: Args) => void) => void
+
+    fn1: (aNumber: number, ...rest: Args) => void,
+>fn1 : (aNumber: number, ...rest: Args) => void
+>aNumber : number
+>rest : Args
+
+    fn2: (aNumber: number, ...rest: Args) => void,
+>fn2 : (aNumber: number, ...rest: Args) => void
+>aNumber : number
+>rest : Args
+
+) => {}
+
+
+// OK, no contextual types
+doSomething(
+>doSomething(    (explicit: number, rest: string) => {}, // Args = [string]    () => {},) : void
+>doSomething : <Args extends unknown[]>(fn1: (aNumber: number, ...rest: Args) => void, fn2: (aNumber: number, ...rest: Args) => void) => void
+
+    (explicit: number, rest: string) => {}, // Args = [string]
+>(explicit: number, rest: string) => {} : (explicit: number, rest: string) => void
+>explicit : number
+>rest : string
+
+    () => {},
+>() => {} : () => void
+
+)
+
+// OK (both contain contextually typed arg)
+doSomething(
+>doSomething(    (contextual, rest: string) => {}, // Args = [string]    (contextual) => {},) : void
+>doSomething : <Args extends unknown[]>(fn1: (aNumber: number, ...rest: Args) => void, fn2: (aNumber: number, ...rest: Args) => void) => void
+
+    (contextual, rest: string) => {}, // Args = [string]
+>(contextual, rest: string) => {} : (contextual: number, rest: string) => void
+>contextual : number
+>rest : string
+
+    (contextual) => {},
+>(contextual) => {} : (contextual: number) => void
+>contextual : number
+
+)
+
+// Contextually type only fn1 - Not ok
+doSomething(
+>doSomething(    (contextual, rest: string) => {}, // ERROR    () => {}, // Args = []) : void
+>doSomething : <Args extends unknown[]>(fn1: (aNumber: number, ...rest: Args) => void, fn2: (aNumber: number, ...rest: Args) => void) => void
+
+    (contextual, rest: string) => {}, // ERROR
+>(contextual, rest: string) => {} : (contextual: number, rest: string) => void
+>contextual : number
+>rest : string
+
+    () => {}, // Args = []
+>() => {} : () => void
+
+)
+doSomething(
+>doSomething(    (contextual, rest: string) => {}, // ERROR    (explicit: number) => {}, // Args = []) : void
+>doSomething : <Args extends unknown[]>(fn1: (aNumber: number, ...rest: Args) => void, fn2: (aNumber: number, ...rest: Args) => void) => void
+
+    (contextual, rest: string) => {}, // ERROR
+>(contextual, rest: string) => {} : (contextual: number, rest: string) => void
+>contextual : number
+>rest : string
+
+    (explicit: number) => {}, // Args = []
+>(explicit: number) => {} : (explicit: number) => void
+>explicit : number
+
+)

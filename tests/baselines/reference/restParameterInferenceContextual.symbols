@@ -1,0 +1,65 @@
+=== tests/cases/compiler/restParameterInferenceContextual.ts ===
+const doSomething = <Args extends unknown[]>(
+>doSomething : Symbol(doSomething, Decl(restParameterInferenceContextual.ts, 0, 5))
+>Args : Symbol(Args, Decl(restParameterInferenceContextual.ts, 0, 21))
+
+    fn1: (aNumber: number, ...rest: Args) => void,
+>fn1 : Symbol(fn1, Decl(restParameterInferenceContextual.ts, 0, 45))
+>aNumber : Symbol(aNumber, Decl(restParameterInferenceContextual.ts, 1, 10))
+>rest : Symbol(rest, Decl(restParameterInferenceContextual.ts, 1, 26))
+>Args : Symbol(Args, Decl(restParameterInferenceContextual.ts, 0, 21))
+
+    fn2: (aNumber: number, ...rest: Args) => void,
+>fn2 : Symbol(fn2, Decl(restParameterInferenceContextual.ts, 1, 50))
+>aNumber : Symbol(aNumber, Decl(restParameterInferenceContextual.ts, 2, 10))
+>rest : Symbol(rest, Decl(restParameterInferenceContextual.ts, 2, 26))
+>Args : Symbol(Args, Decl(restParameterInferenceContextual.ts, 0, 21))
+
+) => {}
+
+
+// OK, no contextual types
+doSomething(
+>doSomething : Symbol(doSomething, Decl(restParameterInferenceContextual.ts, 0, 5))
+
+    (explicit: number, rest: string) => {}, // Args = [string]
+>explicit : Symbol(explicit, Decl(restParameterInferenceContextual.ts, 8, 5))
+>rest : Symbol(rest, Decl(restParameterInferenceContextual.ts, 8, 22))
+
+    () => {},
+)
+
+// OK (both contain contextually typed arg)
+doSomething(
+>doSomething : Symbol(doSomething, Decl(restParameterInferenceContextual.ts, 0, 5))
+
+    (contextual, rest: string) => {}, // Args = [string]
+>contextual : Symbol(contextual, Decl(restParameterInferenceContextual.ts, 14, 5))
+>rest : Symbol(rest, Decl(restParameterInferenceContextual.ts, 14, 16))
+
+    (contextual) => {},
+>contextual : Symbol(contextual, Decl(restParameterInferenceContextual.ts, 15, 5))
+
+)
+
+// Contextually type only fn1 - Not ok
+doSomething(
+>doSomething : Symbol(doSomething, Decl(restParameterInferenceContextual.ts, 0, 5))
+
+    (contextual, rest: string) => {}, // ERROR
+>contextual : Symbol(contextual, Decl(restParameterInferenceContextual.ts, 20, 5))
+>rest : Symbol(rest, Decl(restParameterInferenceContextual.ts, 20, 16))
+
+    () => {}, // Args = []
+)
+doSomething(
+>doSomething : Symbol(doSomething, Decl(restParameterInferenceContextual.ts, 0, 5))
+
+    (contextual, rest: string) => {}, // ERROR
+>contextual : Symbol(contextual, Decl(restParameterInferenceContextual.ts, 24, 5))
+>rest : Symbol(rest, Decl(restParameterInferenceContextual.ts, 24, 16))
+
+    (explicit: number) => {}, // Args = []
+>explicit : Symbol(explicit, Decl(restParameterInferenceContextual.ts, 25, 5))
+
+)

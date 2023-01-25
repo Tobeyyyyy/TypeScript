@@ -1,0 +1,36 @@
+tests/cases/compiler/restParameterInferenceContextual.ts(21,5): error TS2345: Argument of type '(contextual: number, rest: string) => void' is not assignable to parameter of type '(aNumber: number) => void'.
+tests/cases/compiler/restParameterInferenceContextual.ts(25,5): error TS2345: Argument of type '(contextual: number, rest: string) => void' is not assignable to parameter of type '(aNumber: number) => void'.
+
+
+==== tests/cases/compiler/restParameterInferenceContextual.ts (2 errors) ====
+    const doSomething = <Args extends unknown[]>(
+        fn1: (aNumber: number, ...rest: Args) => void,
+        fn2: (aNumber: number, ...rest: Args) => void,
+    ) => {}
+    
+    
+    // OK, no contextual types
+    doSomething(
+        (explicit: number, rest: string) => {}, // Args = [string]
+        () => {},
+    )
+    
+    // OK (both contain contextually typed arg)
+    doSomething(
+        (contextual, rest: string) => {}, // Args = [string]
+        (contextual) => {},
+    )
+    
+    // Contextually type only fn1 - Not ok
+    doSomething(
+        (contextual, rest: string) => {}, // ERROR
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!!! error TS2345: Argument of type '(contextual: number, rest: string) => void' is not assignable to parameter of type '(aNumber: number) => void'.
+        () => {}, // Args = []
+    )
+    doSomething(
+        (contextual, rest: string) => {}, // ERROR
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!!! error TS2345: Argument of type '(contextual: number, rest: string) => void' is not assignable to parameter of type '(aNumber: number) => void'.
+        (explicit: number) => {}, // Args = []
+    )
