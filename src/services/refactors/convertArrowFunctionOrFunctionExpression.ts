@@ -1,4 +1,5 @@
 import {
+    addEmitFlags,
     ApplicableRefactorInfo,
     ArrowFunction,
     Block,
@@ -7,6 +8,7 @@ import {
     copyTrailingAsLeadingComments,
     Debug,
     Diagnostics,
+    EmitFlags,
     emptyArray,
     factory,
     FileTextChanges,
@@ -274,6 +276,14 @@ function getEditInfoForConvertToNamedFunction(context: RefactorContext, func: Fu
     const modifiersFlags = (getCombinedModifierFlags(variableDeclaration) & ModifierFlags.Export) | getEffectiveModifierFlags(func);
     const modifiers = factory.createModifiersFromModifierFlags(modifiersFlags);
     const newNode = factory.createFunctionDeclaration(length(modifiers) ? modifiers : undefined, func.asteriskToken, name, func.typeParameters, func.parameters, func.type, body);
+
+    addEmitFlags(newNode, EmitFlags.SingleLine);
+
+    newNode.body?.statements.forEach(s => {
+        if (s.kind & SyntaxKind.ReturnStatement) {
+            addEmitFlags(s, EmitFlags.SingleLine);
+        }
+    });
 
     if (variableDeclarationList.declarations.length === 1) {
         return textChanges.ChangeTracker.with(context, t => t.replaceNode(file, statement, newNode));
