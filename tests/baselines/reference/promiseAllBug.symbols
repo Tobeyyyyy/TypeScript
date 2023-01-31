@@ -1,0 +1,38 @@
+=== tests/cases/compiler/MyType.ts ===
+type MyType = {} | null | undefined;
+>MyType : Symbol(MyType, Decl(MyType.ts, 0, 0))
+
+const myVar: MyType = null as MyType;
+>myVar : Symbol(myVar, Decl(MyType.ts, 2, 5))
+>MyType : Symbol(MyType, Decl(MyType.ts, 0, 0))
+>MyType : Symbol(MyType, Decl(MyType.ts, 0, 0))
+
+myVar?.toLocaleString;
+>myVar?.toLocaleString : Symbol(Object.toLocaleString, Decl(lib.es5.d.ts, --, --))
+>myVar : Symbol(myVar, Decl(MyType.ts, 2, 5))
+>toLocaleString : Symbol(Object.toLocaleString, Decl(lib.es5.d.ts, --, --))
+
+const x = myVar;
+>x : Symbol(x, Decl(MyType.ts, 5, 5))
+>myVar : Symbol(myVar, Decl(MyType.ts, 2, 5))
+
+=== tests/cases/compiler/index.ts ===
+async function myUnusedFunction() {
+>myUnusedFunction : Symbol(myUnusedFunction, Decl(index.ts, 0, 0))
+
+  const fetch1 = Promise.resolve(['hello', 'world']);
+>fetch1 : Symbol(fetch1, Decl(index.ts, 1, 7))
+>Promise.resolve : Symbol(PromiseConstructor.resolve, Decl(lib.es2015.promise.d.ts, --, --), Decl(lib.es2015.promise.d.ts, --, --), Decl(lib.es2015.promise.d.ts, --, --))
+>Promise : Symbol(Promise, Decl(lib.es5.d.ts, --, --), Decl(lib.es2015.iterable.d.ts, --, --), Decl(lib.es2015.promise.d.ts, --, --), Decl(lib.es2015.symbol.wellknown.d.ts, --, --))
+>resolve : Symbol(PromiseConstructor.resolve, Decl(lib.es2015.promise.d.ts, --, --), Decl(lib.es2015.promise.d.ts, --, --), Decl(lib.es2015.promise.d.ts, --, --))
+
+  const [data1] = await Promise.all([fetch1]);
+>data1 : Symbol(data1, Decl(index.ts, 2, 9))
+>Promise.all : Symbol(PromiseConstructor.all, Decl(lib.es2015.iterable.d.ts, --, --), Decl(lib.es2015.promise.d.ts, --, --))
+>Promise : Symbol(Promise, Decl(lib.es5.d.ts, --, --), Decl(lib.es2015.iterable.d.ts, --, --), Decl(lib.es2015.promise.d.ts, --, --), Decl(lib.es2015.symbol.wellknown.d.ts, --, --))
+>all : Symbol(PromiseConstructor.all, Decl(lib.es2015.iterable.d.ts, --, --), Decl(lib.es2015.promise.d.ts, --, --))
+>fetch1 : Symbol(fetch1, Decl(index.ts, 1, 7))
+
+  data1.length;
+>data1 : Symbol(data1, Decl(index.ts, 2, 9))
+}

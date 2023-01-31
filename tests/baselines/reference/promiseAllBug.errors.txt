@@ -1,0 +1,33 @@
+tests/cases/compiler/index.ts(4,9): error TS2339: Property 'length' does not exist on type 'Promise<string[]>'.
+
+
+==== tests/cases/compiler/tsconfig.json (0 errors) ====
+    {
+      "compilerOptions": {
+        "target": "es2016",
+        "module": "commonjs",                               
+        "esModuleInterop": true,                             
+        "forceConsistentCasingInFileNames": true,    
+        "strict": true,                              
+        "skipLibCheck": true,                       
+        "noEmit": true
+      }
+    }
+    
+==== tests/cases/compiler/MyType.ts (0 errors) ====
+    type MyType = {} | null | undefined;
+    
+    const myVar: MyType = null as MyType;
+    
+    myVar?.toLocaleString;
+    const x = myVar;
+    
+==== tests/cases/compiler/index.ts (1 errors) ====
+    async function myUnusedFunction() {
+      const fetch1 = Promise.resolve(['hello', 'world']);
+      const [data1] = await Promise.all([fetch1]);
+      data1.length;
+            ~~~~~~
+!!! error TS2339: Property 'length' does not exist on type 'Promise<string[]>'.
+!!! related TS2773 tests/cases/compiler/index.ts:4:9: Did you forget to use 'await'?
+    }
