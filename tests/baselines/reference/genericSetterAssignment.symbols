@@ -1,0 +1,45 @@
+=== tests/cases/compiler/genericSetterAssignment.ts ===
+// repro from #51676
+
+class C1<T> {
+>C1 : Symbol(C1, Decl(genericSetterAssignment.ts, 0, 0))
+>T : Symbol(T, Decl(genericSetterAssignment.ts, 2, 9))
+
+    get x(): string { return '' }
+>x : Symbol(C1.x, Decl(genericSetterAssignment.ts, 2, 13), Decl(genericSetterAssignment.ts, 3, 33))
+
+    set x(val: string | T) {}
+>x : Symbol(C1.x, Decl(genericSetterAssignment.ts, 2, 13), Decl(genericSetterAssignment.ts, 3, 33))
+>val : Symbol(val, Decl(genericSetterAssignment.ts, 4, 10))
+>T : Symbol(T, Decl(genericSetterAssignment.ts, 2, 9))
+}
+const c = new C1<string[]>()
+>c : Symbol(c, Decl(genericSetterAssignment.ts, 6, 5))
+>C1 : Symbol(C1, Decl(genericSetterAssignment.ts, 0, 0))
+
+c.x = [] as string[]
+>c.x : Symbol(C1.x, Decl(genericSetterAssignment.ts, 2, 13), Decl(genericSetterAssignment.ts, 3, 33))
+>c : Symbol(c, Decl(genericSetterAssignment.ts, 6, 5))
+>x : Symbol(C1.x, Decl(genericSetterAssignment.ts, 2, 13), Decl(genericSetterAssignment.ts, 3, 33))
+
+interface C2<T> {
+>C2 : Symbol(C2, Decl(genericSetterAssignment.ts, 7, 20))
+>T : Symbol(T, Decl(genericSetterAssignment.ts, 9, 13))
+
+    get y(): string
+>y : Symbol(C2.y, Decl(genericSetterAssignment.ts, 9, 17), Decl(genericSetterAssignment.ts, 10, 19))
+
+    set y(val: string | T)
+>y : Symbol(C2.y, Decl(genericSetterAssignment.ts, 9, 17), Decl(genericSetterAssignment.ts, 10, 19))
+>val : Symbol(val, Decl(genericSetterAssignment.ts, 11, 10))
+>T : Symbol(T, Decl(genericSetterAssignment.ts, 9, 13))
+}
+declare const d: C2<string[]>
+>d : Symbol(d, Decl(genericSetterAssignment.ts, 13, 13))
+>C2 : Symbol(C2, Decl(genericSetterAssignment.ts, 7, 20))
+
+d.y = [] as string[]
+>d.y : Symbol(C2.y, Decl(genericSetterAssignment.ts, 9, 17), Decl(genericSetterAssignment.ts, 10, 19))
+>d : Symbol(d, Decl(genericSetterAssignment.ts, 13, 13))
+>y : Symbol(C2.y, Decl(genericSetterAssignment.ts, 9, 17), Decl(genericSetterAssignment.ts, 10, 19))
+

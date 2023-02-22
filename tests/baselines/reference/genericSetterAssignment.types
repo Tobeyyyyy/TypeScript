@@ -1,0 +1,46 @@
+=== tests/cases/compiler/genericSetterAssignment.ts ===
+// repro from #51676
+
+class C1<T> {
+>C1 : C1<T>
+
+    get x(): string { return '' }
+>x : string
+>'' : ""
+
+    set x(val: string | T) {}
+>x : string
+>val : string | T
+}
+const c = new C1<string[]>()
+>c : C1<string[]>
+>new C1<string[]>() : C1<string[]>
+>C1 : typeof C1
+
+c.x = [] as string[]
+>c.x = [] as string[] : string[]
+>c.x : string | string[]
+>c : C1<string[]>
+>x : string | string[]
+>[] as string[] : string[]
+>[] : undefined[]
+
+interface C2<T> {
+    get y(): string
+>y : string
+
+    set y(val: string | T)
+>y : string
+>val : string | T
+}
+declare const d: C2<string[]>
+>d : C2<string[]>
+
+d.y = [] as string[]
+>d.y = [] as string[] : string[]
+>d.y : string | string[]
+>d : C2<string[]>
+>y : string | string[]
+>[] as string[] : string[]
+>[] : undefined[]
+
